@@ -1,0 +1,128 @@
+body {
+    background-color: black;
+    color: white;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+}
+
+h1 {
+    margin: 2vh 0 0;
+    font-size: 2vw;
+}
+
+/*alle bokstavene*/
+#alfabet {
+    display: table;
+    content: "";
+    clear: both;
+    padding: 0;
+    margin: 20px auto;
+    text-align: center;
+
+    /*fjerner slik at spilleren ikke kan markere bokstavene*/
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+#alfabet li {
+    float: left;
+    margin: 0px 10px 10px 0px;
+    width: 4vh;
+    padding: 0.3vw 0.3vw;
+    cursor: pointer;
+    list-style-type: none;
+    border-radius: 3px;
+    background-color: #884ea0;
+    color: white;
+    font-size: large;
+
+}
+#alfabet li:hover {
+    background-color: white;
+    color: #884ea0;
+}
+
+/*strekene som skal fylles ut*/
+#mittOrd {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+#mittOrd li {
+    list-style-type: none;
+    display: inline-block;
+    padding: 0.5vw;
+    margin: 0;
+}
+
+/*Vil gjøre bokstavene grå etter at de har blitt trykket på*/
+.aktiv {
+    opacity: 0.5;
+  -moz-transition: all 0.8s ease-in;
+  -moz-transition:all 0.2s ease-in-out;
+  -webkit-transition:all 0.2s ease-in-out;
+}
+
+
+/*spill igjen knapp*/
+button {
+    cursor: pointer;
+    background-color: white;
+    color: #764989;
+    border: 0;
+    margin-top: 20px;
+    padding: 10px 15px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #884ea0;
+    color: white;
+}
+
+button:active {
+    transform: scale(0.95);
+}
+button:focus {
+    outline: 0;
+}
+
+/*Bilde med hangman*/
+img {
+    width: 20vw;
+    height: auto;
+}
+
+/*Media queries*/
+@media only screen and (max-width: 768px) {
+    h1{
+        font-size: 6vw;
+    }
+
+    img {
+        width: 25vw;
+        height: auto;
+    }
+
+    #alfabet li {
+        padding: 0.1vw 0.1vw;
+    }
+}
+
+@media only screen and (min-width: 769px) {
+    h1 {
+        font-size: 3vw;
+    }
+}

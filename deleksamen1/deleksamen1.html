@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InnfProg 2020 | Deleksamen 1</title>
+    <style>
+        section { height: 100vh; display: block; overflow: hidden; padding: 0; position: relative; background-image: url(1383.jpg); background-position: bottom center; background-size: 100% auto; }
+        h1 { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #b61010; color: #fff; font-size: 5rem; padding: 1rem; }
+    </style>
+</head>
+<body>
+    <section id="fill">
+        <h1 id="text">Fix me!</h1>
+    </section>
+    <script>
+        //Først setter vi noen variabler  
+        var success = 1577;
+        // Endrer 1383 til 1577 når vi definerer verdien til success.
+        var twofivefive = "0, 255, 0";
+        // Setter på en "fnutt" som mangler i linjen over.
+
+        var action = "Mad";
+        var person = "Yo";
+
+        var error_margin = 97;
+
+        var double_margin = error_margin + 2;
+        //Legger til en semikolon etter 2-tallet for å indikere slutt på kommandoen. Legger også til "+" istedenfor "*" slik at det blir konkatenering.
+        var fail = success + double_margin;
+        //Flytter resten av koden til linjen under, siden dette ikke har noe med variabeln som blir definert over å gjøre. Lager en ny variabel.
+        
+     
+        //Så sjekker vi om vi har løst alle feilene
+        // Legger til en ekstra "/" i linjen over, slik at det blir en kommentar og ikke en del av koden. 
+        if(success == 1577) {
+            //Legger til et ekstra likhetstegn, hvis ikke deklarerer vi bare en eksisterende variabel på nytt. 
+            person = person + "u ";
+            //Setter mellomrom etter u, da vil det bli mellomrom mellom "you" og "made" på nettsiden. 
+            action = action + "e";
+            //Fjerner et pluss-tegn foran "e", slik at stringen blir korrekt satt opp. 
+        } else {
+            var twofivefive = "0, 255, 0";
+            //Variabel twofivefive er deklarert tidligere, som "0, 255, 0". Endrer derfor denne til det samme. 
+        }
+        
+        //Til slutt endrer vi til riktige verdier
+        document.getElementById("fill").style.backgroundImage = "url(" + success + ".jpg)";
+       /* Fikser stavefeilen slik at verdien blir riktig. Istedenfor "sucess", skriver vi "success". 
+        Setter inn 1577 foran ".jpg" slik at den henter bildet med navnet 1577.
+        Fjerner "E" i getElementByIDE, og gjør D'en til lowercase, slik at vi får riktig kommando.*/
+        
+        document.getElementById("text").style.backgroundColor = "rgb(" + twofivefive + ")";
+        // Endrer "txet" til "text" i linjen over, da vil metoden være riktig.
+
+        document.getElementById("text").innerHTML = person + " " + action + " it!";
+        //Legger til "+" i stringen, slik at konkateneringen blir korrekt og viser det den skal på nettsiden. 
+    </script>
+</body>
+</html>

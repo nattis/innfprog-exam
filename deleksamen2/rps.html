@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stein, Saks, Papir</title>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: #f3f3f3;
+            text-align: center;
+            font-family: 'Libre Baskerville', serif;
+        }
+        h1 {
+            font-size: 3rem;
+        }
+        #gamearea {
+            width: 100%;
+            max-width: 800px;
+            background: #fff;
+            margin: 20px auto;
+            padding: 20px;
+            border: 2px solid #ccc;
+            display: block;
+            overflow: hidden;
+        }
+        #winnertext {
+            background: #f3f3f3;
+            color: #333;
+            font-size: 2rem;
+            padding: 1rem;
+        }
+        #player {
+            width: 45%;
+            float: left;
+        }
+        #uavgjort {
+            clear:both;
+        }
+        /*  Gjør slik at telleren for uavgjorte kamper vises under spillervinduet, mellom spillerens og maskinens "wins". */
+        #playerChoices {
+            display: flex;
+            justify-content: space-between;
+        }
+        #playerChoices img {
+            width: 25%;
+        }
+
+        #computer {
+            width: 45%;
+            float: right;
+        }
+        #computerChoice img {
+            width: 25%;
+        }
+        #playerChoices, #computerChoice {
+            margin: 20px 0;
+            padding: 20px 0;
+        }
+        #games {
+            width: 100%;
+            clear: both;
+            padding-top: 20px;
+            border-top: 1px solid #ccc;
+            font-weight: bold;
+        }
+        #draw-box {
+            width: 100%;
+            clear: both;
+            padding-top: 20px;
+            border-top: 1px dotted #ccc;
+        }
+    </style>
+</head>
+<body>
+    <section id="gamearea">
+        <h1>Stein, Saks, Papir</h1>
+        <p id="games">Kamp nummer 1:</p>
+        <div id="winnertext">Spiller, gjør ditt valg...</div>
+
+        <div id="player">
+            <h2>Spiller</h2>
+            <!-- Legger til en onclick event, som gjør at når vi trykker på et bilde, vil den sette igang play() funksjonen slik at spillet starter.-->
+            <!-- Legger til bildet med roboten slik at vi har et fjerde valg i spillet. -->
+            <div id="playerChoices">
+                <img src="stein.png" onclick="play('stein')" id="stein" />
+                <img src="saks.png" onclick="play('saks')" id="saks" />
+                <img src="papir.png" onclick="play('papir')" id="papir" />
+                <img src="robot.png" onclick="play('robot')" id="robot" />
+            </div>
+            <p id="playerWins">Seire: 0</p>
+        </div>
+        <div id="computer">
+            <h2>Datamaskin</h2>
+            <div id="computerChoice">
+                <!-- Fylles ut når spiller har valgt -->
+            </div>
+            <p id="computerWins">Seire: 0</p>
+        </div>
+        <!-- Legger til en div-tagg slik at telleren for uavgjorte kamper vises i spillet.  --> 
+        <div id="uavgjort">
+            Uavgjort: 0
+        </div>
+        
+    </section>
+    
+
+
+    <script>
+        //Først deklarer jeg variabler vi trenger i spillet:
+        var computerChoice = "";
+        var winner = "";
+        
+
+        //Tellere for antall ganger man har spilt/ vunnet:
+        //Legger til en variabel som kalles uavgjort, og gir den en startverdi på 0. 
+        var games = 1; //Matcher teksten "Kamp nummer 1"...
+        var playerWins = 0;
+        var computerWins = 0;
+        var uavgjort = 0;
+
+        //Array med mulige valg:
+        // Legger til robot som et valg i tillegg til de tre andre. 
+        var choices = ["stein", "saks", "papir", "robot"];
+
+        /* Funksjon for å sjekke vinner ------------------------
+         * Vi deklarerer en funksjon checkWinner som tar imot to
+         * parametere; computerChoice og playerChoice.
+         * Begge verdiene til disse parameterne kommer fra funksjonen play().
+         * Funksjonen skal sjekke hvilken spiller som vinner, og oppdatere
+         * tellerne basert på vinneren.
+         * La til teller for uavgjort, slik at den oppdateres basert på om det blir uavgjort eller ikke.
+         * La også til robot som valg i spillet, og oppdaterte valgene slik at spillet blir riktig når
+         * enten spiller eller datamaskin velger robot. */
+        function checkWinner(computerChoice, playerChoice) {
+            if(computerChoice == "stein") {
+                if(playerChoice == "papir") {
+                    winner = "Spiller";
+                    playerWins++;
+                } else if (playerChoice == "stein") {
+                    winner = "Uavgjort! Ingen";
+                    uavgjort++;
+                } else if (playerChoice == "robot") {
+                    winner = "Datamaskinen";
+                    computerWins++;
+                } else {
+                    winner = "Datamaskinen";
+                    computerWins++;
+                }   
+                
+            }
+
+            if(computerChoice == "saks") {
+                if(playerChoice == "stein") {
+                    winner = "Spiller";
+                    playerWins++;
+                } else if (playerChoice == "saks") {
+                    winner = "Uavgjort! Ingen";
+                    uavgjort++;
+                } else if (playerChoice == "robot") {
+                    winner = "Spiller";
+                    playerWins++;
+                } else {
+                    winner = "Datamaskinen";
+                    computerWins++;
+                }
+            }
+
+            if(computerChoice == "papir") {
+                if(playerChoice == "saks") {
+                    winner = "Spiller";
+                    playerWins++;
+                } else if (playerChoice == "papir") {
+                    winner = "Uavgjort! Ingen";
+                    uavgjort++;
+                } else if (playerChoice == "robot") {
+                    winner = "Spiller";
+                    playerWins++;
+                } else {
+                    winner = "Datamaskinen";
+                    computerWins++;
+                }
+            }
+
+            if (computerChoice == "robot") {
+                if (playerChoice == "stein") {
+                    winner = "Spiller";
+                    playerWins++;
+                } else if (playerChoice == "robot") {
+                    winner = "Uavgjort! Ingen";
+                    uavgjort++;
+                } else if (playerChoice == "saks") {
+                    winner = "Datamaskinen"
+                    computerWins++;
+                } else {
+                    winner = "Datamaskinen"
+                    computerWins++;
+                }
+            }
+        }
+
+        /* FUNKSJON FOR Å UTFØRE ET SPILL --------------------------------------
+         * Vi oppretter en funksjon kalt play(). Denne kjøres når en spiller klikker på sitt valg.
+         * Funksjonen tar i mot en parameter, choice, som er en tekststreng som viser hva brukeren har valgt.
+         * Denne tekststrengen representerer en verdi i arrayen choices.
+         * Når funksjonen kjøres må den
+         * - øke antall spill med 1
+         * - skrive ut antall spill til #games
+         * - fjerne rammer fra spillerens valg i tidligere spill
+         * - legge til en ramme rundt spillerens valg for dette spillet
+         * - velge en tilfeldig verdi for datamaskinen
+         * - vise datamaskinens valg i #computerChoice
+         * - kjøre en test som sjekker om spillerens valg slår datamaskinens valg, og oppdatere tellerne
+         * - skrive ut hvem som vinner
+         * - skrive ut den oppdaterte telleren i henholdsvis #playerWins eller #computerWins
+         */
+        function play(playerChoice) {
+            //Øk antall spill med 1:
+            games++;
+            //Skriv ut til #games:
+            document.getElementById("games").innerHTML = "Kamp nummer " + games + ":";
+           
+            //Fjern rammer fra tidligere valg:
+            //Gjorde koden mer effektiv ved å legge til en for-løkke mot choices arrayen. Den vil nå legge ramme rundt bildet som blir trykket på.
+            for (i = 0; i < choices.length; i++) {
+            document.getElementById(choices[i]).border = 0;
+            }
+
+            //Legg til en ramme rundt brukerens valg for dette spillet: 
+            document.getElementById(playerChoice).border = 3;
+
+            //Utvalg av tilfeldig verdi fra arrayen choices til datamaskin:
+            computerChoice = choices[Math.floor(Math.random() * choices.length)];
+
+            //Tester for å se hvem som vinner.
+            checkWinner(computerChoice, playerChoice);
+            
+            /*Legger til en setTimeout funksjon, som vil gi en delay i når datamaskinens valg og kunngjøring av vinneren skjer. 
+            * Legger så inn alle koder som oppdaterer dokumentet inn i funksjonen. Disse vil da alle vises 1 sekund etter
+            * at spiller har valgt en av de fire figurene. */
+            setTimeout(function(){
+                //Skriv ut bilde av datamaskinens valg:
+                document.getElementById("computerChoice").innerHTML = "<img src='" + computerChoice + ".png' alt='" + computerChoice + "' />";
+               
+                //Skriv ut tekst om vinneren til #winnertext: 
+                document.getElementById("winnertext").innerHTML = winner + " vinner!";
+
+                //Lager en if-test som vil gjøre #winnertext vinduet rød dersom maskinen vinner, grønt hvis spiller vinner, og gult hvis det blir uavgjort. 
+                 if (winner == "Spiller") {
+                document.getElementById("winnertext").style.backgroundColor = "green";
+                }  
+                else if (winner == "Uavgjort! Ingen") {
+                    document.getElementById("winnertext").style.backgroundColor = "yellow";
+                } else  {
+                    winner == "Datamaskinen"
+                    document.getElementById("winnertext").style.backgroundColor = "red";
+                } 
+
+                //Oppdater tellere
+                //La til teller for uavgjort, slik at den oppdateres, og vil skrives ut i spillet. 
+                document.getElementById("playerWins").innerHTML = "Seire: " + playerWins;
+                document.getElementById("computerWins").innerHTML = "Seire: " + computerWins;
+                document.getElementById("uavgjort").innerHTML = "Uavgjort: " + uavgjort;
+             }, 1000);
+        }
+    </script>
+    <p><small><div>Icons made by <a href="https://www.flaticon.local/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.local/" title="Flaticon">www.flaticon.local</a></div></small></p>
+</body>
+</html>

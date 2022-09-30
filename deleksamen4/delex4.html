@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="nb">
+    <head>
+        <title>Hangman | Deleksamen 4</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="ex4.css">
+    </head>
+    <body>
+        <h1>Hangman</h1>
+        <p>Finn det hemmelige ordet før personen henges!</p>
+
+        <img id="hangmanImg" src="hangman_feil0.jpg">
+
+        <!--Div tagg som vi senere skal bruke til å legge til bokstaver i-->
+        <div id="knapper"></div>
+
+        <div id="gjette-felt"></div>
+
+        <!--I denne p taggen kommer gjenstående liv til å bli vist-->
+        <p id="liv"></p>
+
+        <!--Knapp for å kunne spille igjen-->
+        <button id="spill-igjen">Spill igjen!</button>
+
+        
+        <script>
+        window.onload = function () {
+            
+            //Lager en array med alle bokstavene i alfabetet
+            const alfabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'æ', 'ø', 'å'];
+
+            //lager en variabel for det valgte ordet spilleren skal gjette
+            var ord;
+
+            //Array med alle ordene som skal inkluderes i spillet
+            var løsningsOrdet = ['inkrementering', 'konkatinering', 'javascript', 'kodeeditor', 'filstruktur', 'utvikling', 'animasjon', 'brukerinput', 'tastaturknapp', 'planleggingsfase'];
+
+            //antall liv spilleren har
+            var liv;
+
+            //Teller antall riktige gjetninger
+            var antallRiktige;
+
+
+            //lager en liste hvor bokstavene skal bli plassert inn når spiller har trykket på riktig
+            let gjetteFeltListe = document.createElement('ul');
+            gjetteFeltListe.setAttribute('id', 'mittOrd');
+            document.getElementById('gjette-felt').appendChild(gjetteFeltListe);
+
+            //henter knapper diven fra html koden
+            //lager en uordnet liste med bokstavene fra alfabet arrayen
+            let bokstaver = document.createElement('ul');
+            bokstaver.id = 'alfabet';
+            document.getElementById('knapper').appendChild(bokstaver);
+
+            //Henter visLiv-elementet fra html koden
+            const visLiv = document.getElementById("liv");
+
+            //lager en funksjon for bokstavene som spillerne skal trykke på
+            const knapper = function () {
+                
+                for (var i=0; i< alfabet.length; i++) {
+                    //bruker let/var for å lage en lokal variabel
+                    //kaller det bokstavElement fordi det er et HTML-element som inneholder bokstaven man trykker på
+                    let bokstavElement = document.createElement('li');
+                    //skriver ut bokstavene fra alfabet arrayen til html'en
+                    bokstavElement.innerHTML = alfabet[i];
+                    //setter bokstaver inn i bokstavElement
+                    bokstaver.append(bokstavElement);
+                    
+                    //kjører sjekk-funksjonen og sender inn bokstavElement som et parameter
+                    sjekk(bokstavElement);
+                }
+                
+            }
+
+
+            //lager en funksjon kalt resultat i denne vil strekene for antall bokstaver i ordet vises
+            resultat = function () {
+        
+                for (var i = 0; i < ord.length; i++) {
+                    //lager en liste kalt gjettefelt
+                    gjetteFelt = document.createElement('li');
+                    //gjettefelt vil skrive ut understreker
+                    gjetteFelt.innerHTML = "_";
+
+                    //gjettefelt listen vil bli lagt til i den uordnede listen gjettefeltliste
+                    gjetteFeltListe.appendChild(gjetteFelt);
+                }
+            }
+
+            //lager en funksjon kalt oppdaterHTML denne viser antall liv, endrer bilder og
+            //hvis spiller vinner eller taper vil det vises ulike tekster
+            oppdaterHTML = function () {
+                //skriver ut en string til visLiv-elementet
+                visLiv.innerHTML = "Du har " + liv + " liv";
+
+                //dersom liv er mindre en 1 vil det kjøres en if test
+                if (liv < 1) {
+                    //det vil da skrives ut at spillet er over
+                    visLiv.innerHTML = "Spillet er over";
+                    //og bokstavene fjernes
+                    bokstaver.innerHTML = "";
+                    
+                    //ordet vil så vises for spilleren
+                    for (var i = 0; i < ord.length; i++) {
+                        gjetteFeltListe.children[i].innerHTML = ord[i];
+                    }
+                    
+                }
+                
+                //dersom antall riktige bokstaver er lik alle bokstavene i ordet
+                //vil det skrives ut til visLiv-elementet at spilleren vant
+                //og bokstavene vil fjernes
+                else if (antallRiktige === ord.length) {
+                    visLiv.innerHTML = "Du vant!";
+                    bokstaver.innerHTML = "";
+                }
+
+                //bildet med galgen vil bli oppdatert etter hvor mange liv som gjenstår
+                var bilde = "hangman_feil" + (6-liv) + ".jpg";
+                document.getElementById("hangmanImg").src = bilde;
+            }
+
+            //funksjon for når spilleren trykker på en bestemt knapp
+            // sender inn knapp som parameter i sjekk-funksjonen
+            sjekk = function (knapp) {
+                //lager en onclick funksjon som vil kjøres når spilleren trykker på knapp
+                //knapp er altså bokstavene i alfabetet
+                knapp.onclick = function () {
+                    let trykketBokstav = (knapp.innerHTML);
+                    //setter klasse kalt aktiv på knapp
+                    knapp.setAttribute('class', 'aktiv');
+                    //knappen vil ikke lenger kunne trykkes på
+                    knapp.onclick = null;
+
+                    for (var i = 0; i < ord.length; i++) {
+                        //dersom bokstaven spilleren trykker på en bokstav
+                        //og den er lik bokstaven i ordet vil gjetteFelt bli fylt ut med bokstaven som blir trykket på
+                        //antall riktige bokstaver vil da bli +1
+                        if (ord[i] === trykketBokstav) {
+                            gjetteFeltListe.children[i].innerHTML = trykketBokstav;
+                            antallRiktige += 1;
+                        }
+                
+                    }
+                
+                    var bokstavIndex = (ord.indexOf(trykketBokstav));
+                    //dersom bokstaven ikke er i ordet vil spilleren miste 1 liv
+                    if (bokstavIndex === -1) {
+                        liv -= 1;
+                    }
+                    oppdaterHTML(); 
+                }
+            }
+            
+            //spill funksjon med alle reglene for spillet
+            spill = function () {
+                //velger et tilfeldig ord fra løsningsord arrayen og setter den inn i variabelen ord
+                ord = løsningsOrdet[Math.floor(Math.random() * løsningsOrdet.length)];
+                knapper();
+
+                liv = 6;
+                antallRiktige = 0;
+                resultat();
+                oppdaterHTML();
+                
+            }
+
+            //når spiller trykker på spill-igjen knappen vil følgende funksjon kjøres
+            document.getElementById('spill-igjen').onclick = function() {
+                //gjettefeltliste vil da tømmes, det vil også bokstavene
+                gjetteFeltListe.innerHTML = "";
+                bokstaver.innerHTML = "";
+                
+                //spillet vil så starte på nytt, ved at spill-funksjonen kalles
+                spill();
+            }
+
+        }
+        
+        </script>
+    </body>
+</html>
